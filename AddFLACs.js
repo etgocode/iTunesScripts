@@ -200,8 +200,11 @@ log("Importing FLAC files from "+src.Name)
 
 function extractMetadata(sourcePath) {
     var tempMetadataPath = fso.BuildPath(tempFolderPath, 'temp.meta')
+    var tempCoverArtPath = fso.BuildPath(tempFolderPath, 'temp.jpg')
     log("Extracting metadata from "+sourcePath)
     exec = WSH.Exec('cmd /c ""'+metaflacEXE+'"'+
+                    ' --export-picture-to='+
+                    ' "'+tempCoverArtPath+'"'+
                     ' --export-tags-to=-'+
                     ' --no-utf8-convert'+
                     ' "'+sourcePath+'"'+
