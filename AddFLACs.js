@@ -69,6 +69,7 @@ var homeFolder  = fso.GetFile(WScript.ScriptFullName).ParentFolder
 var flacEXE     = fso.BuildPath(homeFolder, "flac.exe")
 var metaflacEXE = fso.BuildPath(homeFolder, "metaflac.exe")
 var utf8to16EXE = fso.BuildPath(homeFolder, "UTF8to16.exe")
+var atomicParsleyEXE = fso.BuildPath(homeFolder, "AtomicParsley.exe")
 
 var src = fso.GetFolder(".")
 
@@ -204,12 +205,12 @@ function extractMetadata(sourcePath) {
     log("Extracting metadata from "+sourcePath)
     exec = WSH.Exec('cmd /c ""'+metaflacEXE+'"'+
                     ' --export-picture-to='+
-                    ' "'+tempCoverArtPath+'"'+
+                    '"'+tempCoverArtPath+'"'+
                     ' --export-tags-to=-'+
                     ' --no-utf8-convert'+
                     ' "'+sourcePath+'"'+
                     ' | "'+utf8to16EXE+'"'+
-                    ' > "'+tempMetadataPath+'""') 
+                    ' > "'+tempMetadataPath+'""')
     while (exec.Status == 0) {
         WScript.Sleep(100)
     }
@@ -270,6 +271,7 @@ function extractMetadata(sourcePath) {
             }
         }
     }
+    tags['ArtworkPath'] = tempCoverArtPath
     return tags
 }
 
@@ -385,6 +387,17 @@ function Traverse(folder) {
             if ('TrackNumber' in tags) track.TrackNumber = tags.TrackNumber
             if ('Date' in tags) track.Year = tags.Date
             if ('Compilation' in tags) track.Compilation = tags.Compilation != 0
+
+            //copy the artwork into the file.
+            log("Inserting artwork")
+            var currentLocation = track.Location
+            exec = WSH.Exec('"'+atomicParsleyEXE+'" "'+currentLocation+'" --artwork "'+tags['ArtworkPath']+'" --overWrite')
+
+            //spinlock tends to get stuck here -> implemented counter
+            for (var i = 0; i < 30; i++) {
+                if (exec.status != 0) break
+                WScript.Sleep(100)
+            }
 
             //
             // As there was no metadata in the intermediate WAV file,
