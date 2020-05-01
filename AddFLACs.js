@@ -204,13 +204,19 @@ function extractMetadata(sourcePath) {
     var tempCoverArtPath = fso.BuildPath(tempFolderPath, 'temp.jpg')
     log("Extracting metadata from "+sourcePath)
     exec = WSH.Exec('cmd /c ""'+metaflacEXE+'"'+
-                    ' --export-picture-to='+
-                    '"'+tempCoverArtPath+'"'+
                     ' --export-tags-to=-'+
                     ' --no-utf8-convert'+
                     ' "'+sourcePath+'"'+
                     ' | "'+utf8to16EXE+'"'+
                     ' > "'+tempMetadataPath+'""')
+    while (exec.Status == 0) {
+        WScript.Sleep(100)
+    }
+
+    //export cover art
+    exec = WSH.Exec('cmd /c ""'+metaflacEXE+'"'+
+        ' --export-picture-to='+
+        '"'+tempCoverArtPath+'"')
     while (exec.Status == 0) {
         WScript.Sleep(100)
     }
