@@ -24,7 +24,7 @@ will be scanned.
 
 ### Prerequisites ###
 
-- FLAC command-line utilities, **flac.exe** and **metaflac.exe**, and
+- FLAC command-line utilities, **flac.exe** and **metaflac.exe**; **AtomicParsley.exe** and
 a UTF-8 to UTF-16 conversion helper must be present in the folder 
 containing the script.
 
@@ -126,6 +126,11 @@ the MIT/X11 license (see COPYING.MIT.)
 The FLAC command-line tools are released under the GPLv2 (see COPYING.GPL.)
 The source code may be obtained from 
 [the official FLAC pages on SourceForge](http://flac.sourceforge.net/download.html).
+
+The AtomicParsley tool is released under the [GPL-2.0](https://github.com/wez/atomicparsley/blob/master/COPYING).
+The source code may be obtained from
+[The AtomicParsley Repository](https://github.com/wez/atomicparsley).
+The executable may be obtained from [sourceforge](https://sourceforge.net/projects/atomicparsley/).
 
 ## SEE ALSO ##
 
