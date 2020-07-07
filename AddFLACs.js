@@ -66,10 +66,10 @@ var WSH = new ActiveXObject("WScript.Shell")
 var fso = new ActiveXObject("Scripting.FileSystemObject")
 
 var homeFolder  = fso.GetFile(WScript.ScriptFullName).ParentFolder
-var flacEXE     = fso.BuildPath(homeFolder, "flac.exe")
-var metaflacEXE = fso.BuildPath(homeFolder, "metaflac.exe")
-var utf8to16EXE = fso.BuildPath(homeFolder, "UTF8to16.exe")
-var atomicParsleyEXE = fso.BuildPath(homeFolder, "AtomicParsley.exe")
+var flacEXE     = fso.BuildPath(homeFolder, "\\bin\\flac.exe")
+var metaflacEXE = fso.BuildPath(homeFolder, "\\bin\\metaflac.exe")
+var utf8to16EXE = fso.BuildPath(homeFolder, "\\bin\\UTF8to16.exe")
+var atomicParsleyEXE = fso.BuildPath(homeFolder, "\\bin\\AtomicParsley.exe")
 
 var src = fso.GetFolder(".")
 
@@ -216,7 +216,8 @@ function extractMetadata(sourcePath) {
     //export cover art
     exec = WSH.Exec('cmd /c ""'+metaflacEXE+'"'+
         ' --export-picture-to='+
-        '"'+tempCoverArtPath+'"')
+        '"'+tempCoverArtPath+'"'+
+        ' "'+sourcePath+'"')
     while (exec.Status == 0) {
         WScript.Sleep(100)
     }
@@ -397,7 +398,7 @@ function Traverse(folder) {
             //copy the artwork into the file.
             log("Inserting artwork")
             var currentLocation = track.Location
-            exec = WSH.Exec('"'+atomicParsleyEXE+'" "'+currentLocation+'" --artwork "'+tags['ArtworkPath']+'" --overWrite')
+            exec = WSH.Exec('cmd /c ""'+atomicParsleyEXE+'" "'+currentLocation+'" --artwork "'+tags['ArtworkPath']+'" --overWrite')
 
             //spinlock tends to get stuck here -> implemented counter
             for (var i = 0; i < 30; i++) {

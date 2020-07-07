@@ -50,7 +50,7 @@ int main(void) {
 		perror("Cannot set stdout to Unicode");
 		exit(1);
 	}
-	while (_getws(buf)) {
+	while (_getws_s(buf)) {
 		if (wcschr(buf, L'\xfffd')) {
 			fprintf(stderr, "Error: Input stream not in UTF-8\n");
 			exit(1);
