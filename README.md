@@ -1,4 +1,7 @@
 # AddFLACs #
+## Not fully working! ##
+
+This fork does converts as described but although the cover art is being embedded into the files it does not show up in iTunes. Furthermore, some tags are not transcribed i.e. CDNUMBER.
 
 ## NAME ##
 
